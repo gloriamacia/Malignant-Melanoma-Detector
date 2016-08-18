@@ -81,3 +81,12 @@ for i = 1 : n
   cancer_features(i,2) = nuclei;
   cancer_features(i,3) = V;
 end
+
+%% VISUALIZE THE EXTRACTED FEATURES 
+close all; clc
+n = size(normal_features,1);
+features = [normal_features; cancer_features];
+Visualize(features,n); % Visualize the extracted features.
+[linear_corr,pval] = corr(features(:,1:3)) % Asses correlation in the data. 
+% If p-value is smaller than 0.05, correlation is significantly different
+% from 0.
