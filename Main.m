@@ -89,4 +89,10 @@ features = [normal_features; cancer_features];
 Visualize(features,n); % Visualize the extracted features.
 [linear_corr,pval] = corr(features(:,1:3)) % Asses correlation in the data. 
 % If p-value is smaller than 0.05, correlation is significantly different
-% from 0.
+% from 0. 
+
+%% PERFORM PRINCIPAL COMPONENT ANALYSIS (PCA)
+% This step may not be necessary (although recommended) if there is no
+% correlation in your data. 
+[V1,V2,V3,pca_3d] = PCA(features,normal_features);
+
