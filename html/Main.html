@@ -1,0 +1,401 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Main</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-08-20"><meta name="DC.source" content="Main.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">SKIN CANCER DETECTOR</a></li><li><a href="#2"><b>Upload training images and extract features</b></a></li><li><a href="#3"><b>Visualize the extracted features</b></a></li><li><a href="#4"><b>Perform Principal Component Analysis (PCA)</b></a></li><li><a href="#5"><b>Machine learning: train and asses model performance</b></a></li></ul></div><h2>SKIN CANCER DETECTOR<a name="1"></a></h2><p>This code builds a system to automatically detect melanoma histology. To use it, download the folder and use the sample data provided or your own to train the models. These models can be customized adjusting their parameters. Uncomment the last two sections to test the created models with new histological data.</p><pre class="codeinput">clc; close <span class="string">all</span>; clear <span class="string">all</span>;
+</pre><h2><b>Upload training images and extract features</b><a name="2"></a></h2><pre class="codeinput"><span class="comment">% Specify the folder where normal samples are.</span>
+myFolder = <span class="string">'/Users/Sergi/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Normal'</span>;
+<span class="comment">% Check to make sure that folder actually exists. Warn user if it doesn't.</span>
+<span class="keyword">if</span> ~isdir(myFolder)
+  errorMessage = sprintf(<span class="string">'Error: The following folder does not exist:\n%s'</span>, myFolder);
+  uiwait(warndlg(errorMessage));
+  <span class="keyword">return</span>;
+<span class="keyword">end</span>
+<span class="comment">% Get a list of all files in the folder with the desired file name pattern.</span>
+filePattern = fullfile(myFolder, <span class="string">'*.bmp'</span>); <span class="comment">% Samples images are bmp format. Modify it if necessary.</span>
+theFiles = dir(filePattern);
+<span class="comment">% Initialize matrix of normal features</span>
+n = length(theFiles);
+normal_features = zeros(n,4);
+normal_features(:,4) = zeros(n,end);
+<span class="keyword">for</span> i = 1 : n
+  baseFileName = theFiles(i).name;
+  fullFileName = fullfile(myFolder, baseFileName);
+  RGB_sample = imread(fullFileName); <span class="comment">% Read RGB image.</span>
+  RGB_sample = RGB_sample(:,round(size(RGB_sample,1)/3):end-8,:); <span class="comment">% Remove black border at the right. Remove line of code if necessary.</span>
+  gray_sample = rgb2gray(RGB_sample); <span class="comment">% Convert RGB image to gray scale.</span>
+  threshold= 120; <span class="comment">% Threshold value. Modify if necessary.</span>
+  BW = gray_sample&lt;threshold; <span class="comment">% Convert gray scale image to black and white.</span>
+  R = 3; <span class="comment">% Disk radius. Adjust if necessary.</span>
+  se = strel(<span class="string">'disk'</span>, R);
+  BW = imdilate(BW, se);
+  se = strel(<span class="string">'disk'</span>, R);
+  BW = imerode(BW, se);
+
+  <span class="comment">% Melanoma features</span>
+  <span class="comment">% Nuclei to Cytoplasm Ratio (NCR)</span>
+  normal_features(i,1) = NCR(BW);
+
+  <span class="comment">% Nuclei Count Function</span>
+  BW = gray_sample&lt;threshold;
+  [nuclei, V] = nuclei_counter(BW); <span class="comment">% Adjust intern parameters if necessary.</span>
+  normal_features(i,2) = nuclei;
+  normal_features(i,3) = V;
+<span class="keyword">end</span>
+
+
+<span class="comment">% Specify the folder where cancer samples are.</span>
+myFolder = <span class="string">'/Users/Sergi/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Cancer'</span>;
+<span class="comment">% Check to make sure that folder actually exists. Warn user if it doesn't.</span>
+<span class="keyword">if</span> ~isdir(myFolder)
+  errorMessage = sprintf(<span class="string">'Error: The following folder does not exist:\n%s'</span>, myFolder);
+  uiwait(warndlg(errorMessage));
+  <span class="keyword">return</span>;
+<span class="keyword">end</span>
+<span class="comment">% Get a list of all files in the folder with the desired file name pattern.</span>
+filePattern = fullfile(myFolder, <span class="string">'*.bmp'</span>); <span class="comment">% Samples images are bmp format. Modify it if necessary.</span>
+theFiles = dir(filePattern);
+<span class="comment">% Initialize matrix of normal features</span>
+n = length(theFiles);
+cancer_features = zeros(n,4);
+cancer_features(:,4) = ones(n,end);
+<span class="keyword">for</span> i = 1 : n
+  baseFileName = theFiles(i).name;
+  fullFileName = fullfile(myFolder, baseFileName);
+  RGB_sample = imread(fullFileName); <span class="comment">% Read RGB image.</span>
+  RGB_sample = RGB_sample(:,round(size(RGB_sample,1)/3):end-8,:); <span class="comment">% Remove black border at the right. Remove line of code if necessary.</span>
+  gray_sample = rgb2gray(RGB_sample); <span class="comment">% Convert RGB image to gray scale.</span>
+  threshold= 120; <span class="comment">% Threshold value. Modify if necessary.</span>
+  BW = gray_sample&lt;threshold; <span class="comment">% Convert gray scale image to black and white.</span>
+  R = 3; <span class="comment">% Disk radius. Adjust if necessary.</span>
+  se = strel(<span class="string">'disk'</span>, R);
+  BW = imdilate(BW, se);
+  se = strel(<span class="string">'disk'</span>, R);
+  BW = imerode(BW, se);
+
+  <span class="comment">% Melanoma features</span>
+  <span class="comment">% Nuclei to Cytoplasm Ratio (NCR)</span>
+  cancer_features(i,1) = NCR(BW);
+
+  <span class="comment">% Nuclei Count Function</span>
+  BW = gray_sample&lt;threshold;
+  [nuclei, V] = nuclei_counter(BW); <span class="comment">% Adjust intern parameters if necessary.</span>
+  cancer_features(i,2) = nuclei;
+  cancer_features(i,3) = V;
+<span class="keyword">end</span>
+</pre><h2><b>Visualize the extracted features</b><a name="3"></a></h2><pre class="codeinput">close <span class="string">all</span>; clc
+n = size(normal_features,1);
+features = [normal_features; cancer_features];
+Visualize(features,n); <span class="comment">% Visualize the extracted features.</span>
+[linear_corr,pval] = corr(features(:,1:3)) <span class="comment">% Asses correlation in the data.</span>
+<span class="comment">% If p-value is smaller than 0.05, correlation is significantly different</span>
+<span class="comment">% from 0.</span>
+</pre><pre class="codeoutput">
+linear_corr =
+
+    1.0000    0.6657    0.5151
+    0.6657    1.0000   -0.0329
+    0.5151   -0.0329    1.0000
+
+
+pval =
+
+    1.0000    0.0000    0.0000
+    0.0000    1.0000    0.7776
+    0.0000    0.7776    1.0000
+
+</pre><img vspace="5" hspace="5" src="Main_01.png" alt=""> <h2><b>Perform Principal Component Analysis (PCA)</b><a name="4"></a></h2><pre class="codeinput"><span class="comment">% This step may not be necessary (although recommended) if there is no</span>
+<span class="comment">% correlation in your data.</span>
+[V1,V2,V3,pca_3d] = PCA(features,normal_features);
+</pre><img vspace="5" hspace="5" src="Main_02.png" alt=""> <h2><b>Machine learning: train and asses model performance</b><a name="5"></a></h2><pre class="codeinput">n = size(normal_features,1);
+c = size(cancer_features,1);
+NCR = pca_3d(:,1);
+Nuclei = pca_3d(:,2);
+Variance = pca_3d(:,3);
+Ground_truth = vertcat(repmat([<span class="string">'Normal'</span>],n,1),repmat([<span class="string">'Cancer'</span>],c,1));
+data = table(NCR,Nuclei,Variance,Ground_truth);
+
+<span class="comment">% Classification Learner</span>
+[trainedClassifier1, validationAccuracy1]= trainComplexTree(data)
+[trainedClassifier2, validationAccuracy2]= trainCoarseGaussianSVM(data)
+[trainedClassifier3, validationAccuracy3]= trainLinearDiscriminant(data)
+[trainedClassifier4, validationAccuracy4]= trainSubspaceDiscriminant(data)
+<span class="comment">% To make predictions with the returned 'trainedClassifier' on new data x</span>
+<span class="comment">% use yfit = trainedClassifier.predictFcn(x);</span>
+
+<span class="comment">% Neural Net Pattern Recognition</span>
+<span class="comment">% Transpose column vector data</span>
+x = pca_3d';
+t = features(:,4)';
+net = NeuralNetwork(x,t);
+<span class="comment">%  To make predictions with the returned trained network 'net' on new data x,</span>
+<span class="comment">%  use y = net(x);</span>
+<span class="comment">%  yfit = trainedClassifier.predictFcn(T)</span>
+</pre><pre class="codeoutput">
+trainedClassifier1 = 
+
+            predictFcn: @(x)treePredictFcn(predictorExtractionFcn(x))
+     RequiredVariables: {'NCR'  'Nuclei'  'Variance'}
+    ClassificationTree: [1x1 ClassificationTree]
+                 About: 'This struct is a trained classifier exported from...'
+          HowToPredict: 'To make predictions on a new table, T, use: ...'
+
+
+validationAccuracy1 =
+
+    0.9605
+
+
+trainedClassifier2 = 
+
+           predictFcn: @(x)svmPredictFcn(predictorExtractionFcn(x))
+    RequiredVariables: {'NCR'  'Nuclei'  'Variance'}
+    ClassificationSVM: [1x1 ClassificationSVM]
+                About: 'This struct is a trained classifier exported from ...'
+         HowToPredict: 'To make predictions on a new table, T, use: ...'
+
+
+validationAccuracy2 =
+
+    0.9605
+
+
+trainedClassifier3 = 
+
+                    predictFcn: [function_handle]
+             RequiredVariables: {'NCR'  'Nuclei'  'Variance'}
+    ClassificationDiscriminant: [1x1 ClassificationDiscriminant]
+                         About: 'This struct is a trained classifier expor...'
+                  HowToPredict: 'To make predictions on a new table, T, us...'
+
+
+validationAccuracy3 =
+
+    0.9605
+
+
+trainedClassifier4 = 
+
+                predictFcn: @(x)ensemblePredictFcn(predictorExtractionFcn(x))
+         RequiredVariables: {'NCR'  'Nuclei'  'Variance'}
+    ClassificationEnsemble: [1x1 classreg.learning.classif.ClassificationEnsemble]
+                     About: 'This struct is a trained classifier exported ...'
+              HowToPredict: 'To make predictions on a new table, T, use: ...'
+
+
+validationAccuracy4 =
+
+    0.9474
+
+
+performance =
+
+    0.1315
+
+</pre><img vspace="5" hspace="5" src="Main_03.png" alt=""> <img vspace="5" hspace="5" src="Main_04.png" alt=""> <img vspace="5" hspace="5" src="Main_05.png" alt=""> <img vspace="5" hspace="5" src="Main_06.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% SKIN CANCER DETECTOR 
+% This code builds a system to automatically detect melanoma histology.  
+% To use it, download the folder and use the sample data provided or
+% your own to train the models. These models can be customized adjusting their parameters.
+% Uncomment the last two sections to test the created models with new histological data. 
+
+clc; close all; clear all;
+%% *Upload training images and extract features*
+
+% Specify the folder where normal samples are.
+myFolder = '/Users/Sergi/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Normal';
+% Check to make sure that folder actually exists. Warn user if it doesn't.
+if ~isdir(myFolder)
+  errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
+  uiwait(warndlg(errorMessage));
+  return;
+end
+% Get a list of all files in the folder with the desired file name pattern.
+filePattern = fullfile(myFolder, '*.bmp'); % Samples images are bmp format. Modify it if necessary.
+theFiles = dir(filePattern);
+% Initialize matrix of normal features
+n = length(theFiles);
+normal_features = zeros(n,4); 
+normal_features(:,4) = zeros(n,end);
+for i = 1 : n
+  baseFileName = theFiles(i).name;
+  fullFileName = fullfile(myFolder, baseFileName);
+  RGB_sample = imread(fullFileName); % Read RGB image.
+  RGB_sample = RGB_sample(:,round(size(RGB_sample,1)/3):end-8,:); % Remove black border at the right. Remove line of code if necessary.
+  gray_sample = rgb2gray(RGB_sample); % Convert RGB image to gray scale. 
+  threshold= 120; % Threshold value. Modify if necessary.
+  BW = gray_sample<threshold; % Convert gray scale image to black and white. 
+  R = 3; % Disk radius. Adjust if necessary. 
+  se = strel('disk', R);
+  BW = imdilate(BW, se);
+  se = strel('disk', R);
+  BW = imerode(BW, se);
+  
+  % Melanoma features
+  % Nuclei to Cytoplasm Ratio (NCR)
+  normal_features(i,1) = NCR(BW); 
+
+  % Nuclei Count Function 
+  BW = gray_sample<threshold; 
+  [nuclei, V] = nuclei_counter(BW); % Adjust intern parameters if necessary. 
+  normal_features(i,2) = nuclei;
+  normal_features(i,3) = V;
+end
+
+
+% Specify the folder where cancer samples are.
+myFolder = '/Users/Sergi/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Cancer';
+% Check to make sure that folder actually exists. Warn user if it doesn't.
+if ~isdir(myFolder)
+  errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
+  uiwait(warndlg(errorMessage));
+  return;
+end
+% Get a list of all files in the folder with the desired file name pattern.
+filePattern = fullfile(myFolder, '*.bmp'); % Samples images are bmp format. Modify it if necessary.
+theFiles = dir(filePattern);
+% Initialize matrix of normal features
+n = length(theFiles);
+cancer_features = zeros(n,4); 
+cancer_features(:,4) = ones(n,end);
+for i = 1 : n
+  baseFileName = theFiles(i).name;
+  fullFileName = fullfile(myFolder, baseFileName);
+  RGB_sample = imread(fullFileName); % Read RGB image.
+  RGB_sample = RGB_sample(:,round(size(RGB_sample,1)/3):end-8,:); % Remove black border at the right. Remove line of code if necessary.
+  gray_sample = rgb2gray(RGB_sample); % Convert RGB image to gray scale. 
+  threshold= 120; % Threshold value. Modify if necessary.
+  BW = gray_sample<threshold; % Convert gray scale image to black and white. 
+  R = 3; % Disk radius. Adjust if necessary. 
+  se = strel('disk', R);
+  BW = imdilate(BW, se);
+  se = strel('disk', R);
+  BW = imerode(BW, se);
+  
+  % Melanoma features
+  % Nuclei to Cytoplasm Ratio (NCR)
+  cancer_features(i,1) = NCR(BW); 
+
+  % Nuclei Count Function 
+  BW = gray_sample<threshold; 
+  [nuclei, V] = nuclei_counter(BW); % Adjust intern parameters if necessary. 
+  cancer_features(i,2) = nuclei;
+  cancer_features(i,3) = V;
+end
+
+%% *Visualize the extracted features*
+close all; clc
+n = size(normal_features,1);
+features = [normal_features; cancer_features];
+Visualize(features,n); % Visualize the extracted features.
+[linear_corr,pval] = corr(features(:,1:3)) % Asses correlation in the data. 
+% If p-value is smaller than 0.05, correlation is significantly different
+% from 0. 
+
+%% *Perform Principal Component Analysis (PCA)*
+
+% This step may not be necessary (although recommended) if there is no
+% correlation in your data. 
+[V1,V2,V3,pca_3d] = PCA(features,normal_features);
+
+%% *Machine learning: train and asses model performance*
+n = size(normal_features,1); 
+c = size(cancer_features,1);
+NCR = pca_3d(:,1);
+Nuclei = pca_3d(:,2);
+Variance = pca_3d(:,3);
+Ground_truth = vertcat(repmat(['Normal'],n,1),repmat(['Cancer'],c,1));
+data = table(NCR,Nuclei,Variance,Ground_truth);
+
+% Classification Learner
+[trainedClassifier1, validationAccuracy1]= trainComplexTree(data)
+[trainedClassifier2, validationAccuracy2]= trainCoarseGaussianSVM(data)
+[trainedClassifier3, validationAccuracy3]= trainLinearDiscriminant(data)
+[trainedClassifier4, validationAccuracy4]= trainSubspaceDiscriminant(data)
+% To make predictions with the returned 'trainedClassifier' on new data x
+% use yfit = trainedClassifier.predictFcn(x);
+
+% Neural Net Pattern Recognition 
+% Transpose column vector data
+x = pca_3d';
+t = features(:,4)';
+net = NeuralNetwork(x,t);
+%  To make predictions with the returned trained network 'net' on new data x,
+%  use y = net(x); 
+%  yfit = trainedClassifier.predictFcn(T)
+
+
+
+
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
