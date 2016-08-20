@@ -1,8 +1,14 @@
+%% SKIN CANCER DETECTOR 
+% This code builds a system to automatically detect melanoma histology.  
+% To use it, download the folder and use the sample data provided or
+% your own to train the models. These models can be customized adjusting their parameters.
+% Uncomment the last two sections to test the created models with new histological data. 
+
 clc; close all; clear all;
-%%
-% UPLOAD TRAINING IMAGES & EXTRACT FEATURES 
-% Specify the folder where NORMAL samples are.
-myFolder = 'C:\Users\Usuari\Aptana Rubles\Favorites\Downloads\MelanomaDetector\Normal';
+%% *Upload training images and extract features*
+
+% Specify the folder where normal samples are.
+myFolder = '/Users/Sergi/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Normal';
 % Check to make sure that folder actually exists. Warn user if it doesn't.
 if ~isdir(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
@@ -42,8 +48,8 @@ for i = 1 : n
 end
 
 
-% Specify the folder where CANCER samples are.
-myFolder = 'C:\Users\Usuari\Aptana Rubles\Favorites\Downloads\MelanomaDetector\Cancer';
+% Specify the folder where cancer samples are.
+myFolder = '/Users/Sergi/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Cancer';
 % Check to make sure that folder actually exists. Warn user if it doesn't.
 if ~isdir(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
@@ -82,7 +88,7 @@ for i = 1 : n
   cancer_features(i,3) = V;
 end
 
-%% VISUALIZE THE EXTRACTED FEATURES 
+%% *Visualize the extracted features*
 close all; clc
 n = size(normal_features,1);
 features = [normal_features; cancer_features];
@@ -91,8 +97,42 @@ Visualize(features,n); % Visualize the extracted features.
 % If p-value is smaller than 0.05, correlation is significantly different
 % from 0. 
 
-%% PERFORM PRINCIPAL COMPONENT ANALYSIS (PCA)
+%% *Perform Principal Component Analysis (PCA)*
+
 % This step may not be necessary (although recommended) if there is no
 % correlation in your data. 
 [V1,V2,V3,pca_3d] = PCA(features,normal_features);
+
+%% *Machine learning: train and asses model performance*
+n = size(normal_features,1); 
+c = size(cancer_features,1);
+NCR = pca_3d(:,1);
+Nuclei = pca_3d(:,2);
+Variance = pca_3d(:,3);
+Ground_truth = vertcat(repmat(['Normal'],n,1),repmat(['Cancer'],c,1));
+data = table(NCR,Nuclei,Variance,Ground_truth);
+
+% Classification Learner
+[trainedClassifier1, validationAccuracy1]= trainComplexTree(data)
+[trainedClassifier2, validationAccuracy2]= trainCoarseGaussianSVM(data)
+[trainedClassifier3, validationAccuracy3]= trainLinearDiscriminant(data)
+[trainedClassifier4, validationAccuracy4]= trainSubspaceDiscriminant(data)
+% To make predictions with the returned 'trainedClassifier' on new data x
+% use yfit = trainedClassifier.predictFcn(x);
+
+% Neural Net Pattern Recognition 
+% Transpose column vector data
+x = pca_3d';
+t = features(:,4)';
+net = NeuralNetwork(x,t);
+%  To make predictions with the returned trained network 'net' on new data x,
+%  use y = net(x); 
+%  yfit = trainedClassifier.predictFcn(T)
+
+
+
+
+
+
+
 
