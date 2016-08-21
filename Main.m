@@ -8,7 +8,7 @@ clc; close all; clear all;
 %% *Upload training images and extract features*
 
 % Specify the folder where normal samples are.
-myFolder = '/Users/Sergi/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Normal';
+myFolder = '/Users/User/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Normal';
 % Check to make sure that folder actually exists. Warn user if it doesn't.
 if ~isdir(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
@@ -49,7 +49,7 @@ end
 
 
 % Specify the folder where cancer samples are.
-myFolder = '/Users/Sergi/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Cancer';
+myFolder = '/Users/User/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Cancer';
 % Check to make sure that folder actually exists. Warn user if it doesn't.
 if ~isdir(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
