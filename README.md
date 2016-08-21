@@ -1,5 +1,7 @@
 # Skin-Cancer-Detection-using-a-Computer-based-System
-Computer-based system to classify histopathological images of skin tissue. Melanoma detection.
+Computer-based system to classify histopathological images of skin tissue. Malignant Melanoma detection.
+For more information about the detector read the project Wiki or visit my personal/professional blog https://techieladyblog.wordpress.com/
 
-This is my first contribution to open source software so your feedback is really important to me. 
-Please help me to improve. 
+Notice also that this is my first contribution to open source software (still a newbie) so your feedback is really important to me. Collaborations, comments or suggestions about how to improve any aspect of the project are welcome. 
+
+If you loved the project, you have an innovative idea to ease the burden of your national health service that could be also applied to any other country... I would like to hear about it! Contact me using github or alternatively at gloriamaciamunoz@gmail.com. 
