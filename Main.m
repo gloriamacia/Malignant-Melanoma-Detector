@@ -8,7 +8,7 @@ clc; close all; clear all;
 %% *Upload training images and extract features*
 
 % Specify the folder where normal samples are.
-myFolder = '/Users/User/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Normal';
+myFolder = '/home/gloria/Baixades/Malignant-Melanoma-Detector-master/Normal';
 % Check to make sure that folder actually exists. Warn user if it doesn't.
 if ~isdir(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
@@ -49,7 +49,7 @@ end
 
 
 % Specify the folder where cancer samples are.
-myFolder = '/Users/User/Downloads/Skin-Cancer-Detection-using-a-Computer-based-System-master/Cancer';
+myFolder = '/home/gloria/Baixades/Malignant-Melanoma-Detector-master/Cancer';
 % Check to make sure that folder actually exists. Warn user if it doesn't.
 if ~isdir(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
@@ -126,8 +126,14 @@ x = pca_3d';
 t = features(:,4)';
 net = NeuralNetwork(x,t);
 %  To make predictions with the returned trained network 'net' on new data x,
-%  use y = net(x); 
-%  yfit = trainedClassifier.predictFcn(T)
+% x needs to be an array of 3 rows (correspoding to NCR, Nuclei size and
+% variance) and as many columns as images.
+% To run it y = net(x); 
+% The output will not be the classification but the raw output of neural
+% network which is a number from 0 to 1. Numbers close to 0 indicate normal
+% while numbers close to 1 indicate cancer. The user must select then the
+% threshold value according to the desired TPR and FPR. 
+
 
 
 
