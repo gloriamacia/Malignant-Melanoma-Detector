@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[   1643442,      27452]
-NotebookOptionsPosition[   1641637,      27390]
-NotebookOutlinePosition[   1641968,      27405]
-CellTagsIndexPosition[   1641925,      27402]
+NotebookDataLength[   1643226,      27441]
+NotebookOptionsPosition[   1641415,      27379]
+NotebookOutlinePosition[   1641754,      27394]
+CellTagsIndexPosition[   1641711,      27391]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -38,8 +38,7 @@ classify histopathological images of skin tissue", "Subsubsection"]], "Input",\
  Evaluatable->False,
  CellChangeTimes->{{3.705550827094998*^9, 3.705550827107991*^9}, 
    3.70555087586812*^9, {3.705550944880015*^9, 3.70555097058482*^9}, {
-   3.7055510613021183`*^9, 3.7055510701726*^9}, 3.705551123015194*^9},
- FormatType->"TextForm"],
+   3.7055510613021183`*^9, 3.7055510701726*^9}, 3.705551123015194*^9}],
 
 Cell[BoxData[
  StyleBox[
@@ -75,55 +74,45 @@ Cell[BoxData[{
     "training", " ", "the", " ", "ANN"}], " ", 
    "*)"}]}], "\[IndentingNewLine]", 
  RowBox[{
-  RowBox[{
-   RowBox[{"data", " ", "=", " ", 
-    RowBox[{"Import", "[", 
-     RowBox[{
-     "\"\</home/gloria/Documents/ETH/Semester2/NN/ImageDatav2.xlsx\>\"", ",", 
-      " ", 
-      RowBox[{"{", 
-       RowBox[{"\"\<Data\>\"", ",", "1", ",", 
-        RowBox[{"Range", "[", 
-         RowBox[{"2", ",", 
-          RowBox[{"nImages", "+", "1"}]}], "]"}], ",", 
-        RowBox[{"{", 
-         RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}]}], "]"}]}], ";"}], 
+  RowBox[{"data", " ", "=", " ", 
+   RowBox[{"Import", "[", 
+    RowBox[{"\"\<ImageData.xlsx\>\"", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Data\>\"", ",", "1", ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"2", ",", 
+         RowBox[{"nImages", "+", "1"}]}], "]"}], ",", 
+       RowBox[{"{", 
+        RowBox[{"1", ",", "2", ",", "3"}], "}"}]}], "}"}]}], "]"}]}], ";", 
   " ", 
   RowBox[{"(*", " ", 
    RowBox[{
    "data", " ", "file", " ", "has", " ", "a", " ", "header", " ", "in", " ", 
-    "row", " ", "1"}], " ", "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"target", " ", "=", "  ", 
-    RowBox[{"Import", "[", 
-     RowBox[{
-     "\"\</home/gloria/Documents/ETH/Semester2/NN/ImageDatav2.xlsx\>\"", ",", 
-      " ", 
-      RowBox[{"{", 
-       RowBox[{"\"\<Data\>\"", ",", "1", ",", 
-        RowBox[{"Range", "[", 
-         RowBox[{"2", ",", 
-          RowBox[{"nImages", "+", "1"}]}], "]"}], ",", "4"}], "}"}]}], 
-     "]"}]}], ";"}], "  ", 
+    "row", " ", "1"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"target", " ", "=", "  ", 
+   RowBox[{"Import", "[", 
+    RowBox[{"\"\<ImageData.xlsx\>\"", ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"\"\<Data\>\"", ",", "1", ",", 
+       RowBox[{"Range", "[", 
+        RowBox[{"2", ",", 
+         RowBox[{"nImages", "+", "1"}]}], "]"}], ",", "4"}], "}"}]}], "]"}]}],
+   ";", "  ", 
   RowBox[{"(*", " ", 
    RowBox[{
    "4", "th", " ", "column", " ", "corresponds", " ", "to", " ", "the", " ", 
-    "ground", " ", "truth"}], " ", "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{
-   RowBox[{"trainindex", " ", "=", " ", 
-    RowBox[{"RandomSample", "[", 
-     RowBox[{
-      RowBox[{"Range", "[", 
-       RowBox[{"2", ",", "nImages"}], "]"}], ",", "nTrainset"}], "]"}]}], 
-   ";"}], " ", 
+    "ground", " ", "truth"}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{"trainindex", " ", "=", " ", 
+   RowBox[{"RandomSample", "[", 
+    RowBox[{
+     RowBox[{"Range", "[", 
+      RowBox[{"2", ",", "nImages"}], "]"}], ",", "nTrainset"}], "]"}]}], ";", 
+  " ", 
   RowBox[{"(*", " ", 
    RowBox[{
    "Randomly", " ", "split", " ", "images", " ", "betweeen", " ", "training", 
-    " ", "and", " ", "testing", " ", "set"}], " ", 
-   "*)"}]}], "\[IndentingNewLine]", 
- RowBox[{
+    " ", "and", " ", "testing", " ", "set"}], " ", "*)"}], 
+  "\[IndentingNewLine]", 
   RowBox[{"testindex", "=", " ", 
    RowBox[{"Complement", "[", 
     RowBox[{
@@ -131,14 +120,14 @@ Cell[BoxData[{
       RowBox[{"2", ",", "nImages"}], "]"}], ",", " ", "trainindex"}], "]"}]}],
    ";"}]}], "Input",
  CellChangeTimes->CompressedData["
-1:eJwdxU8oQ3EAB/BtIqdNkexPiQO1hLLlwGGP9Zb8OZgDkoORkthBjq8JB02j
-bUUjYctBm7Ax1Hi9xVYyYs2fichBTeywKWnm993h06ekb7R9QMDj8cQEHt8X
-eHcXYpTpPnmIY3qtH69Mm05xiyEZwoqj6BPmz9Q0uskiaY4a5/p8RSx5cNQj
-wYpJYzBMbtt0Zo4IFdQdudL7lZlZttJYJr/WYJ2W1WJrMdeFu+ezjX9keu0y
-85XbbMPMhM2FZaFhD28xRjXkr57jH99YCg8929O4Q39SxiczI/1yvJ0VqcKG
-m3ol3prVqfBtaE6N11lN2EzWi6sfMWf5fMGsUvyKC/be6I2lGPUxFWjCDmaH
-OyOrHSk/LlQ1R3FPOvmOOclFHFuE5QkssSdKA2Sn66ECf7ce1OLOlKEO90rj
-oiD595jOw/+HE+DA
+1:eJwdxU0og3EAB+DXZJw2Idm7lThQSyhbDhz2srbk42AOaDkYKcl2kOOacNA0
+2lY0ErYchLAx1FhbMyWbWPMZkYN6ZTtsShr+vx2enpJebXs/h6IomsCj+xz3
+7hzLmO6Sh5jVqfx4adIUwC2GZAhLjh6ecMZUTaOTzBdy5TjH4ynykge0LhpL
+xo1nEXLb+kb6KE/C3JIr3bH0+kWrAovEV0qsUXlV2Frs68Lds1nGX7JiJZz+
+0mm2Yf2YbROLQkMuap5lGvKXz/G3ZySFB5/tf7hDd1KWQdYP94nxdma0Chuu
+66V4a1ojwzehGTle9SojZrJOUP2IfZbPF+yVCl5xwd6bYm2BZT4mgk3Yod/x
+nZLljpQfF8qaH7D6L/mOffRFHFt45QlM2xOlQfLG5n0F/mo9qMWdKUMd7hHG
++Wfkn2NFLubGAuqnfZbJDuf14H/g5emd
   "]],
 
 Cell[BoxData[
@@ -27389,7 +27378,7 @@ Cell[BoxData[
 }, Open  ]]
 },
 WindowSize->{1280, 716},
-WindowMargins->{{Automatic, 0}, {0, 28}},
+WindowMargins->{{Automatic, 0}, {Automatic, 56}},
 FrontEndVersion->"11.0 for Linux x86 (64-bit) (September 21, 2016)",
 StyleDefinitions->"Default.nb"
 ]
@@ -27406,52 +27395,52 @@ CellTagsIndex->{}
 Notebook[{
 Cell[558, 20, 592, 12, 68, "Input",
  Evaluatable->False],
-Cell[1153, 34, 411, 7, 38, "Input",
+Cell[1153, 34, 386, 6, 38, "Input",
  Evaluatable->False],
-Cell[1567, 43, 682, 16, 35, "Input",
+Cell[1542, 42, 682, 16, 35, "Input",
  Evaluatable->False],
-Cell[2252, 61, 2881, 80, 193, "Input"],
-Cell[5136, 143, 688, 12, 35, "Input",
+Cell[2227, 60, 2684, 70, 149, "Input"],
+Cell[4914, 132, 688, 12, 35, "Input",
  Evaluatable->False],
-Cell[5827, 157, 3284, 71, 125, "Input"],
-Cell[9114, 230, 1079, 30, 79, "Input"],
-Cell[10196, 262, 3195, 77, 309, "Input"],
-Cell[13394, 341, 742, 18, 78, "Input"],
-Cell[14139, 361, 1161, 31, 79, "Input"],
+Cell[5605, 146, 3284, 71, 125, "Input"],
+Cell[8892, 219, 1079, 30, 79, "Input"],
+Cell[9974, 251, 3195, 77, 309, "Input"],
+Cell[13172, 330, 742, 18, 78, "Input"],
+Cell[13917, 350, 1161, 31, 79, "Input"],
 Cell[CellGroupData[{
-Cell[15325, 396, 1019, 14, 30, "Subsubtitle",
+Cell[15103, 385, 1019, 14, 30, "Subsubtitle",
  Evaluatable->False],
-Cell[16347, 412, 1563, 31, 57, "Input"],
-Cell[17913, 445, 241, 6, 34, "Input"],
-Cell[18157, 453, 1537, 34, 57, "Input"],
+Cell[16125, 401, 1563, 31, 57, "Input"],
+Cell[17691, 434, 241, 6, 34, "Input"],
+Cell[17935, 442, 1537, 34, 57, "Input"],
 Cell[CellGroupData[{
-Cell[19719, 491, 135, 2, 32, "Input"],
-Cell[19857, 495, 20090, 360, 250, "Output"]
+Cell[19497, 480, 135, 2, 32, "Input"],
+Cell[19635, 484, 20090, 360, 250, "Output"]
 }, Open  ]],
-Cell[39962, 858, 385, 7, 35, "Input",
+Cell[39740, 847, 385, 7, 35, "Input",
  Evaluatable->False],
-Cell[40350, 867, 2924, 77, 218, "Input"],
-Cell[43277, 946, 1910, 53, 194, "Input"],
+Cell[40128, 856, 2924, 77, 218, "Input"],
+Cell[43055, 935, 1910, 53, 194, "Input"],
 Cell[CellGroupData[{
-Cell[45212, 1003, 790, 17, 103, "Input"],
+Cell[44990, 992, 790, 17, 103, "Input"],
 Cell[CellGroupData[{
-Cell[46027, 1024, 806, 14, 24, "Print"],
-Cell[46836, 1040, 808, 14, 24, "Print"],
-Cell[47647, 1056, 844, 14, 24, "Print"],
-Cell[48494, 1072, 838, 14, 24, "Print"]
+Cell[45805, 1013, 806, 14, 24, "Print"],
+Cell[46614, 1029, 808, 14, 24, "Print"],
+Cell[47425, 1045, 844, 14, 24, "Print"],
+Cell[48272, 1061, 838, 14, 24, "Print"]
 }, Open  ]]
 }, Open  ]],
-Cell[49359, 1090, 497, 10, 35, "Input",
+Cell[49137, 1079, 497, 10, 35, "Input",
  Evaluatable->False],
 Cell[CellGroupData[{
-Cell[49881, 1104, 2109, 67, 172, "Input"],
-Cell[51993, 1173, 1573453, 25876, 426, "Output"]
+Cell[49659, 1093, 2109, 67, 172, "Input"],
+Cell[51771, 1162, 1573453, 25876, 426, "Output"]
 }, Open  ]],
-Cell[1625461, 27052, 925, 17, 35, "Input",
+Cell[1625239, 27041, 925, 17, 35, "Input",
  Evaluatable->False],
 Cell[CellGroupData[{
-Cell[1626411, 27073, 1944, 47, 103, "Input"],
-Cell[1628358, 27122, 13251, 264, 252, "Output"]
+Cell[1626189, 27062, 1944, 47, 103, "Input"],
+Cell[1628136, 27111, 13251, 264, 252, "Output"]
 }, Open  ]]
 }, Open  ]]
 }
